@@ -23,16 +23,24 @@ class RacePackController extends Controller
     {
         Gate::authorize('volunteer');
 
-        $keyword = $request->get('q');
-        
-        $registrations = Registration::with(['user', 'ticketCategory.event', 'racePack'])
-            ->where(function ($query) use ($keyword) {
-                $query->whereHas('user', fn($q) => $q->where('name', 'LIKE', "%{$keyword}%")
-                                                     ->orWhere('email', 'LIKE', "%{$keyword}%"))
-                      ->orWhere('id', $keyword);
-            })
-            ->where('status', 'verified')
-            ->get();
+        $keyword = trim($request->get('q', ''));
+
+        $query = Registration::with(['user', 'ticketCategory.event', 'racePack'])
+            ->where('status', 'verified');
+
+        if ($keyword !== '') {
+            $numericId = ltrim(str_replace('REG-', '', strtoupper($keyword)), '0') ?: '0';
+
+            $query->where(function ($q) use ($keyword, $numericId) {
+                $q->whereHas('user', function ($u) use ($keyword) {
+                        $u->where('name', 'LIKE', "%{$keyword}%")
+                          ->orWhere('email', 'LIKE', "%{$keyword}%");
+                    })
+                  ->orWhere('id', $numericId);
+            });
+        }
+
+        $registrations = $query->latest()->get();
 
         return view('volunteer.search-results', compact('registrations', 'keyword'));
     }

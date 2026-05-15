@@ -1,3 +1,4 @@
+@use(Illuminate\Support\Facades\Storage)
 @extends('layouts.app')
 
 @section('title', 'Verifikasi Pembayaran')
@@ -15,7 +16,9 @@
                 <td>{{ $reg->ticketCategory->category_name }}</td>
                 <td>
                     @if($reg->payment_proof)
-                        <a href="{{ Storage::url($reg->payment_proof) }}" target="_blank" class="text-blue-500">Lihat</a>
+                        <a href="{{ Storage::url($reg->payment_proof) }}" target="_blank" class="text-blue-500 underline">Lihat Bukti</a>
+                    @else
+                        <span class="text-gray-400 text-sm">Tidak ada</span>
                     @endif
                 </td>
                 <td>

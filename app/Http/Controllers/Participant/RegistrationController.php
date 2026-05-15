@@ -9,6 +9,7 @@ use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class RegistrationController extends Controller
 {
@@ -105,11 +106,41 @@ class RegistrationController extends Controller
     {
         Gate::authorize('participant');
 
-        if ($registration->user_id !== auth()->id() || $registration->status !== 'verified') {
-            abort(403, 'E-Ticket hanya tersedia setelah pembayaran diverifikasi.');
+        if ($registration->user_id !== auth()->id()) {
+            abort(403, 'Akses ditolak.');
         }
 
-        return response()->download(storage_path('app/' . $registration->eticket_path));
+        if ($registration->status !== 'verified') {
+            return redirect()->route('participant.registrations.index')
+                ->with('error', 'E-Ticket hanya tersedia setelah pembayaran diverifikasi.');
+        }
+
+        // Generate PDF kalau belum ada atau file fisik tidak ada
+        $needsGenerate = !$registration->eticket_path
+            || !file_exists(Storage::path($registration->eticket_path));
+
+        if ($needsGenerate) {
+            $registration->generateETicket();
+            $registration->refresh();
+        }
+
+        $fullPath = Storage::path($registration->eticket_path);
+
+        \Log::info('E-Ticket debug', [
+            'eticket_path'   => $registration->eticket_path,
+            'full_path'      => $fullPath,
+            'file_exists'    => file_exists($fullPath),
+            'storage_exists' => Storage::exists($registration->eticket_path),
+        ]);
+
+        if (!file_exists($fullPath)) {
+            return redirect()->route('participant.registrations.index')
+                ->with('error', 'File E-Ticket tidak ditemukan. Hubungi admin.');
+        }
+
+        $filename = 'eticket-' . $registration->getRegistrationNumber() . '.pdf';
+
+        return response()->download($fullPath, $filename);
     }
 
     public function cancel(Registration $registration)

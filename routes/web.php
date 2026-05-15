@@ -9,6 +9,11 @@ use App\Http\Controllers\DashboardController;
 
 Auth::routes();
 
+// Redirect root ke login
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
 // Admin routes (hanya auth, pengecekan Gate di dalam controller)
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
@@ -39,14 +44,3 @@ Route::middleware(['auth'])->prefix('participant')->name('participant.')->group(
     Route::get('download/{registration}', [RegistrationController::class, 'downloadTicket'])->name('download-ticket');
     Route::delete('cancel/{registration}', [RegistrationController::class, 'cancel'])->name('cancel');
 });
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
