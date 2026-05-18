@@ -61,6 +61,11 @@
                               {{ request()->routeIs('volunteer.pending-packs') ? 'bg-orange-500 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
                         <i class="fas fa-box-open"></i> Belum Ambil Race Pack
                     </a>
+                    <a href="{{ route('volunteer.claimed-packs') }}"
+                       class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition
+                              {{ request()->routeIs('volunteer.claimed-packs') ? 'bg-orange-500 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                        <i class="fas fa-check-circle"></i> Sudah Ambil Race Pack
+                    </a>
 
                 @else
                     <a href="{{ route('participant.dashboard') }}"

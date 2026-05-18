@@ -39,13 +39,14 @@ class TicketCategoryController extends Controller
                          ->with('success', 'Kategori tiket berhasil ditambahkan.');
     }
 
-    public function edit(Event $event, TicketCategory $ticketCategory)
+    public function edit(TicketCategory $ticketCategory)
     {
         Gate::authorize('admin');
+        $event = $ticketCategory->event;
         return view('admin.ticket_categories.edit', compact('event', 'ticketCategory'));
     }
 
-    public function update(Request $request, Event $event, TicketCategory $ticketCategory)
+    public function update(Request $request, TicketCategory $ticketCategory)
     {
         Gate::authorize('admin');
 
@@ -57,15 +58,16 @@ class TicketCategoryController extends Controller
 
         $ticketCategory->update($request->all());
 
-        return redirect()->route('admin.events.ticket_categories.index', $event->id)
+        return redirect()->route('admin.events.ticket_categories.index', $ticketCategory->event_id)
                          ->with('success', 'Kategori tiket diupdate.');
     }
 
-    public function destroy(Event $event, TicketCategory $ticketCategory)
+    public function destroy(TicketCategory $ticketCategory)
     {
         Gate::authorize('admin');
+        $eventId = $ticketCategory->event_id;
         $ticketCategory->delete();
-        return redirect()->route('admin.events.ticket_categories.index', $event->id)
+        return redirect()->route('admin.events.ticket_categories.index', $eventId)
                          ->with('success', 'Kategori tiket dihapus.');
     }
 }

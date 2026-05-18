@@ -58,11 +58,11 @@
                 </td>
                 <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('admin.events.ticket_categories.edit', [$event, $cat]) }}"
+                        <a href="{{ route('admin.ticket_categories.edit', $cat) }}"
                            class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-50 text-orange-700 hover:bg-blue-100 transition">
                             <i class="fas fa-edit"></i> Edit
                         </a>
-                        <form action="{{ route('admin.events.ticket_categories.destroy', [$event, $cat]) }}" method="POST" class="inline"
+                        <form action="{{ route('admin.ticket_categories.destroy', $cat) }}" method="POST" class="inline"
                               onsubmit="return confirm('Hapus kategori {{ $cat->category_name }}?')">
                             @csrf @method('DELETE')
                             <button type="submit"

@@ -15,7 +15,7 @@
         <h2 class="text-lg font-bold text-gray-800 mb-1">Edit Kategori Tiket</h2>
         <p class="text-sm text-gray-500 mb-6">{{ $event->name }}</p>
 
-        <form method="POST" action="{{ route('admin.events.ticket_categories.update', [$event, $ticketCategory]) }}" class="space-y-5">
+        <form method="POST" action="{{ route('admin.ticket_categories.update', $ticketCategory) }}" class="space-y-5">
             @csrf @method('PUT')
 
             <div>

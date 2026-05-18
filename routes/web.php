@@ -28,8 +28,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 Route::middleware(['auth'])->prefix('volunteer')->name('volunteer.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'volunteer'])->name('dashboard');
     Route::get('search', [RacePackController::class, 'search'])->name('search');
+    Route::get('preview/{registration}', [RacePackController::class, 'preview'])->name('preview');
     Route::post('confirm/{registration}', [RacePackController::class, 'confirm'])->name('confirm');
     Route::get('pending-packs', [RacePackController::class, 'pendingPacks'])->name('pending-packs');
+    Route::get('claimed-packs', [RacePackController::class, 'claimedPacks'])->name('claimed-packs');
 });
 
 // Participant routes

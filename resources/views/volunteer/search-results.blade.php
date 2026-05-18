@@ -81,16 +81,28 @@
                 </td>
                 <td class="px-6 py-4 text-right">
                     @if(!$reg->racePack)
-                        <form action="{{ route('volunteer.confirm', $reg) }}" method="POST"
-                              onsubmit="return confirm('Konfirmasi serah terima race pack untuk {{ $reg->user->name }}?')">
-                            @csrf
-                            <button type="submit"
-                                    class="inline-flex items-center gap-1.5 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium rounded-lg transition">
-                                <i class="fas fa-box-open"></i> Serahkan Race Pack
-                            </button>
-                        </form>
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('volunteer.preview', $reg) }}"
+                               class="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium rounded-lg transition">
+                                <i class="fas fa-eye"></i> Lihat Tiket
+                            </a>
+                            <form action="{{ route('volunteer.confirm', $reg) }}" method="POST"
+                                  onsubmit="return confirm('Konfirmasi serah terima race pack untuk {{ $reg->user->name }}?')">
+                                @csrf
+                                <button type="submit"
+                                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium rounded-lg transition">
+                                    <i class="fas fa-box-open"></i> Serahkan Race Pack
+                                </button>
+                            </form>
+                        </div>
                     @else
-                        <span class="text-xs text-gray-400">—</span>
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('volunteer.preview', $reg) }}"
+                               class="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium rounded-lg transition">
+                                <i class="fas fa-eye"></i> Lihat Tiket
+                            </a>
+                            <span class="text-xs text-gray-400">Sudah diserahkan</span>
+                        </div>
                     @endif
                 </td>
             </tr>

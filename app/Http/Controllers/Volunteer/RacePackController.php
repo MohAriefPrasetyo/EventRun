@@ -45,6 +45,16 @@ class RacePackController extends Controller
         return view('volunteer.search-results', compact('registrations', 'keyword'));
     }
 
+    // Preview e-ticket peserta sebelum serah terima race pack
+    public function preview(Registration $registration)
+    {
+        Gate::authorize('volunteer');
+
+        $registration->load(['user', 'ticketCategory.event', 'racePack']);
+
+        return view('volunteer.preview-ticket', compact('registration'));
+    }
+
     // Konfirmasi serah terima race pack
     public function confirm(Registration $registration)
     {
@@ -79,5 +89,17 @@ class RacePackController extends Controller
             ->paginate(20);
 
         return view('volunteer.pending-packs', compact('registrations'));
+    }
+
+    // Daftar peserta yang sudah ambil race pack
+    public function claimedPacks()
+    {
+        Gate::authorize('volunteer');
+
+        $racePacks = \App\Models\RacePack::with(['registration.user', 'registration.ticketCategory.event', 'volunteer'])
+            ->latest('claimed_at')
+            ->paginate(20);
+
+        return view('volunteer.claimed-packs', compact('racePacks'));
     }
 }

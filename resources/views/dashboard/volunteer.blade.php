@@ -26,7 +26,7 @@
         <p class="text-xs text-gray-400 mt-2">Kosongkan dan klik Cari untuk melihat semua peserta verified.</p>
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-3 gap-4">
         <a href="{{ route('volunteer.search') }}"
            class="bg-white rounded-xl shadow-sm border border-orange-100 p-5 hover:border-orange-300 hover:shadow-md transition group flex items-center gap-4">
             <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center group-hover:bg-orange-600 transition">
@@ -45,6 +45,16 @@
             <div>
                 <p class="font-semibold text-gray-800 text-sm">Belum Ambil Race Pack</p>
                 <p class="text-xs text-gray-400 mt-0.5">Peserta yang belum klaim</p>
+            </div>
+        </a>
+        <a href="{{ route('volunteer.claimed-packs') }}"
+           class="bg-white rounded-xl shadow-sm border border-orange-100 p-5 hover:border-orange-300 hover:shadow-md transition group flex items-center gap-4">
+            <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center group-hover:bg-green-600 transition">
+                <i class="fas fa-check-circle text-white text-sm"></i>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-800 text-sm">Sudah Ambil Race Pack</p>
+                <p class="text-xs text-gray-400 mt-0.5">Riwayat penyerahan</p>
             </div>
         </a>
     </div>
